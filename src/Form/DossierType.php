@@ -7,6 +7,7 @@ use App\Entity\Dossier;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,7 +37,8 @@ class DossierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('nomDossier')
+            //modif
+            ->add('nomDossier' ,HiddenType::class)
             ->add('raisonSociale' , TextType::class , $this->getConfiguration("raisonSociale") )
             ->add('formeJuridique' , ChoiceType::class , [
                 'choices' => [
@@ -59,7 +61,8 @@ class DossierType extends AbstractType
 
 
 
-                ]
+                ],
+
             ])
             ->add('capitalSocial' )
             ->add('nbAssocies' ,  ChoiceType::class , [

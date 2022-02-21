@@ -60,10 +60,12 @@ class DossierController extends AbstractController
     {
         $user = $this->getUser();
         $nomdeDossier = $request->get('nomdossier');
-//       dd($nomdeDossier);
+//
         $dossier = new Dossier();
         $coGerant = new CoGerant();
         $nomdeDossier =strval($nomdeDossier);
+        $dossier->setNomDossier($nomdeDossier);
+
 
         $form1 = $this->createForm(CoGerantType::class , $coGerant);
 //        $form1->add('save', SubmitType::class, [
@@ -71,20 +73,24 @@ class DossierController extends AbstractController
 //        ]);
 
         $form = $this->createForm(DossierType::class,$dossier);
-        $form->add('save', SubmitType::class, [
-            'attr' => ['class' => 'save'],
-        ]);
+//        $form->add('save', SubmitType::class, [
+//            'attr' => ['class' => 'save'],
+//        ]);
 
         $form->handleRequest($request);
+        $form1->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $dossier->setNomDossier($nomdeDossier);
+
+
             $dossier->setUser($user);
-            $this->em->persist($dossier);
+
 ////            if($form1->isSubmitted() && $form1->isValid()){
 //            $idossier = $dossier->getId();
-////-            $idossier= intval($idossier);
-//            $coGerant->setDossier($idossier);
-//            $this->em->persist($coGerant);
+//           $idossier= intval($idossier);
+            $coGerant->setDossier($dossier);
+
+           $this->em->persist($coGerant);
+            $this->em->persist($dossier);
             $this->em->flush();
 
           //  $this->em->flush();
@@ -95,6 +101,7 @@ class DossierController extends AbstractController
             return $this->redirectToRoute('dossiers');
 
         }
+
 
 
 
